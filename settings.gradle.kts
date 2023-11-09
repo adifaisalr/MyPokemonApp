@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "My Pokemon App"
 include(":app")
- 
+include(":core:domain")
+include(":core:data")
