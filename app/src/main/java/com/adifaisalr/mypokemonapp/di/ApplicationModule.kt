@@ -3,6 +3,13 @@ package com.adifaisalr.mypokemonapp.di
 import com.adifaisalr.core.data.api.Api
 import com.adifaisalr.core.data.api.MyCallAdapterFactory
 import com.adifaisalr.core.data.api.PokemonService
+import com.adifaisalr.core.domain.model.ApiResource
+import com.adifaisalr.core.domain.model.NamedApiResource
+import com.adifaisalr.core.domain.model.util.ApiResourceAdapter
+import com.adifaisalr.core.domain.model.util.NamedApiResourceAdapter
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +29,19 @@ class ApplicationModule {
             .baseUrl(Api.DEFAULT_BASE_URL)
             .client(Api.getDefaultClient())
             .addCallAdapterFactory(MyCallAdapterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(
+                GsonBuilder().apply {
+                    setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    registerTypeAdapter(
+                        TypeToken.get(ApiResource::class.java).type,
+                        ApiResourceAdapter()
+                    )
+                    registerTypeAdapter(
+                        TypeToken.get(NamedApiResource::class.java).type,
+                        NamedApiResourceAdapter()
+                    )
+                }.create()
+            ))
             .build()
             .create(PokemonService::class.java)
     }

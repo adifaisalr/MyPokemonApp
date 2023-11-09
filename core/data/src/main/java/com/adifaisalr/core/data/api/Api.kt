@@ -26,6 +26,7 @@ class Api {
         }
 
         const val DEFAULT_BASE_URL = "https://pokeapi.co/api/v2/"
+        const val DEFAULT_BASE_IMAGE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"
         const val TIMEOUT = 30000
 
         val defaultInterceptor = Interceptor { chain ->

@@ -1,4 +1,4 @@
-package com.adifaisalr.mypokemonapp.ui.theme
+package com.adifaisalr.mypokemonapp.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
