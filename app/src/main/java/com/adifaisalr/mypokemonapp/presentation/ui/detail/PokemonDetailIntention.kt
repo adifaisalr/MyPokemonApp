@@ -8,6 +8,7 @@ data class PokemonDetailViewState(
     val capturedSectionViewState: CapturedSectionViewState = CapturedSectionViewState(),
     val isLoading: Boolean = false,
     val error: String? = null,
+    val toastMessage: String? = null,
 ) : BaseViewModel.ViewState
 
 data class CapturedSectionViewState(
@@ -26,6 +27,6 @@ sealed class PokemonDetailActionResult : BaseViewModel.ActionResult {
         val capturedSectionViewState: CapturedSectionViewState,
     ) : PokemonDetailActionResult()
 
-    data object DoNothing : PokemonDetailActionResult()
+    data class ShowToast(val message: String) : PokemonDetailActionResult()
     data object RefreshState : PokemonDetailActionResult()
 }

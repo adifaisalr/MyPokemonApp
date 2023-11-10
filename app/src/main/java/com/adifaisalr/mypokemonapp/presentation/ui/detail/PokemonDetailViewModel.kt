@@ -71,6 +71,7 @@ class PokemonDetailViewModel @Inject constructor(
                     CapturedSectionViewState(isCaptured = true)
                 )
             )
+            handleActionResult(PokemonDetailActionResult.ShowToast("Pokemon Captured"))
         }
     }
 
@@ -82,6 +83,7 @@ class PokemonDetailViewModel @Inject constructor(
                     CapturedSectionViewState(isCaptured = false)
                 )
             )
+            handleActionResult(PokemonDetailActionResult.ShowToast("Pokemon Released"))
         }
     }
 
@@ -94,6 +96,7 @@ class PokemonDetailViewModel @Inject constructor(
             capturedSectionViewState = oldState.capturedSectionReducer(actionResult),
             isLoading = isLoadingReducer(actionResult),
             error = errorReducer(actionResult),
+            toastMessage = toastReducer(actionResult),
         )
     }
 
@@ -107,7 +110,11 @@ class PokemonDetailViewModel @Inject constructor(
 
     private fun PokemonDetailViewState.capturedSectionReducer(actionResult: PokemonDetailActionResult): CapturedSectionViewState {
         return when (actionResult) {
-            is PokemonDetailActionResult.SetCapturedSectionViewState -> actionResult.capturedSectionViewState
+            is PokemonDetailActionResult.SetCapturedSectionViewState -> {
+                isCaptured = actionResult.capturedSectionViewState.isCaptured
+
+                actionResult.capturedSectionViewState
+            }
             else -> capturedSectionViewState
         }
     }
@@ -123,6 +130,13 @@ class PokemonDetailViewModel @Inject constructor(
     private fun errorReducer(actionResult: PokemonDetailActionResult): String? {
         return when (actionResult) {
             is PokemonDetailActionResult.SetError -> actionResult.errorMsg
+            else -> null
+        }
+    }
+
+    private fun toastReducer(actionResult: PokemonDetailActionResult): String? {
+        return when (actionResult) {
+            is PokemonDetailActionResult.ShowToast -> actionResult.message
             else -> null
         }
     }
