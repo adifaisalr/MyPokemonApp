@@ -34,4 +34,8 @@ class PokemonRepositoryImpl(
     override suspend fun loadPokemonLocallyById(id: Int): Pokemon? {
         return pokemonDao.loadPokemonById(id)
     }
+
+    override suspend fun updatePokemon(pokemon: Pokemon): Int {
+        return pokemonDao.updatePokemon(pokemon)
+    }
 }

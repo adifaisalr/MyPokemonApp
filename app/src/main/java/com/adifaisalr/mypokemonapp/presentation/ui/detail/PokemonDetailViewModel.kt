@@ -8,10 +8,16 @@ import com.adifaisalr.core.domain.usecase.CapturePokemon
 import com.adifaisalr.core.domain.usecase.FetchPokemonDetail
 import com.adifaisalr.core.domain.usecase.LoadCapturedPokemon
 import com.adifaisalr.core.domain.usecase.ReleasePokemon
+import com.adifaisalr.core.domain.usecase.RenamePokemon
 import com.adifaisalr.mypokemonapp.presentation.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import java.math.BigInteger
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class PokemonDetailViewModel @Inject constructor(
@@ -20,6 +26,7 @@ class PokemonDetailViewModel @Inject constructor(
     private val capturePokemonUseCase: CapturePokemon,
     private val releasePokemonUseCase: ReleasePokemon,
     private val loadCapturedPokemonUseCase: LoadCapturedPokemon,
+    private val renamePokemonUseCase: RenamePokemon,
 ) : BaseViewModel<PokemonDetailViewState, PokemonDetailActionResult>(
     initialState = PokemonDetailViewState()
 ) {
@@ -49,13 +56,33 @@ class PokemonDetailViewModel @Inject constructor(
 
     private fun loadCaptureStatus() = viewModelScope.launch {
         val pokemonId = savedStateHandle.get<Int>(SAVED_STATE_ID) ?: return@launch
-        val favoriteMedia = loadCapturedPokemonUseCase.loadById(pokemonId)
-        isCaptured = favoriteMedia != null
+        val capturedPokemon = loadCapturedPokemonUseCase.loadById(pokemonId)
+        isCaptured = capturedPokemon != null
+        capturedPokemon?.let {
+            pokemon?.name = it.name
+        }
         handleActionResult(
             PokemonDetailActionResult.SetCapturedSectionViewState(
                 CapturedSectionViewState(isCaptured = isCaptured)
             )
         )
+    }
+
+    fun renamePokemon() = viewModelScope.launch {
+        pokemon?.let { poke ->
+            var newName = poke.name
+            val fibo = fibonacci(poke.renameCount)
+            val stripIdx = poke.name.lastIndexOf('-')
+            if (stripIdx > -1) {
+                newName = poke.name.removeRange(stripIdx, poke.name.length)
+            }
+            newName += "-$fibo"
+
+            val pokeCopy = poke.copy(renameCount = poke.renameCount + 1, name = newName)
+            renamePokemonUseCase(pokeCopy)
+            handleActionResult(PokemonDetailActionResult.SetPokemon(pokeCopy))
+            handleActionResult(PokemonDetailActionResult.ShowToast("pokemon was renamed to ${newName}!"))
+        }
     }
 
     fun changeCaptured() {
@@ -64,27 +91,61 @@ class PokemonDetailViewModel @Inject constructor(
     }
 
     private fun capturedPokemon() = viewModelScope.launch {
-        pokemon?.let {
-            val res = capturePokemonUseCase(it)
-            handleActionResult(
-                PokemonDetailActionResult.SetCapturedSectionViewState(
-                    CapturedSectionViewState(isCaptured = true)
+        handleActionResult(PokemonDetailActionResult.DoNothing)
+        pokemon?.let { poke ->
+            val success = Random.nextBoolean()
+            if (!success) {
+                handleActionResult(PokemonDetailActionResult.ShowToast("Failed to catch ${poke.name}!"))
+            } else {
+                val res = capturePokemonUseCase(poke)
+                handleActionResult(
+                    PokemonDetailActionResult.SetCapturedSectionViewState(
+                        CapturedSectionViewState(isCaptured = true)
+                    )
                 )
-            )
-            handleActionResult(PokemonDetailActionResult.ShowToast("Pokemon Captured"))
+                handleActionResult(PokemonDetailActionResult.ShowToast("${poke.name} was captured!"))
+            }
         }
     }
 
     private fun releasePokemon() = viewModelScope.launch {
-        pokemon?.let {
-            val res = releasePokemonUseCase(it)
-            handleActionResult(
-                PokemonDetailActionResult.SetCapturedSectionViewState(
-                    CapturedSectionViewState(isCaptured = false)
+        handleActionResult(PokemonDetailActionResult.DoNothing)
+        pokemon?.let { poke ->
+            val success = isPrime(Random.nextInt(until = 100))
+            if (!success) {
+                handleActionResult(PokemonDetailActionResult.ShowToast("Failed to release ${poke.name}!"))
+            } else {
+                val res = releasePokemonUseCase(poke)
+                handleActionResult(
+                    PokemonDetailActionResult.SetCapturedSectionViewState(
+                        CapturedSectionViewState(isCaptured = false)
+                    )
                 )
-            )
-            handleActionResult(PokemonDetailActionResult.ShowToast("Pokemon Released"))
+                handleActionResult(PokemonDetailActionResult.ShowToast("${poke.name} was released!"))
+            }
         }
+    }
+
+    private fun isPrime(number: Int): Boolean {
+        if (number <= 1) {
+            return false
+        }
+
+        for (i in 2 until number) {
+            if (number % i == 0) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    private tailrec fun fibonacci(n: Int, a: Long = 0, b: Long = 1): Long {
+        if (n == 0) {
+            return a
+        }
+
+        return fibonacci(n - 1, b, a + b)
     }
 
     override fun reducer(
@@ -103,6 +164,7 @@ class PokemonDetailViewModel @Inject constructor(
     private fun pokemonDetailReducer(actionResult: PokemonDetailActionResult): Pokemon? {
         pokemon = when (actionResult) {
             is PokemonDetailActionResult.SetError -> null
+            is PokemonDetailActionResult.SetPokemon -> actionResult.pokemon
             else -> pokemon
         }
         return pokemon
@@ -115,6 +177,7 @@ class PokemonDetailViewModel @Inject constructor(
 
                 actionResult.capturedSectionViewState
             }
+
             else -> capturedSectionViewState
         }
     }

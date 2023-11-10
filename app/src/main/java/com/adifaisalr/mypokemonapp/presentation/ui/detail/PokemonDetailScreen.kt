@@ -63,7 +63,10 @@ fun PokemonDetailRoute(
         },
         onClickCapture = {
             viewModel.changeCaptured()
-        }
+        },
+        onClickRename = {
+            viewModel.renamePokemon()
+        },
     )
 }
 
@@ -76,6 +79,7 @@ private fun PokemonDetailScreen(
     onFetchPokemonDetail: () -> Unit,
     onRefresh: () -> Unit,
     onClickCapture: () -> Unit,
+    onClickRename: () -> Unit,
 ) {
     LaunchedEffect(key1 = Unit) {
         onFetchPokemonDetail()
@@ -112,6 +116,7 @@ private fun PokemonDetailScreen(
             modifier = modifier.padding(innerPadding),
             viewState = viewState,
             onClickCapture = onClickCapture,
+            onClickRename = onClickRename,
         )
     }
 }
@@ -120,7 +125,8 @@ private fun PokemonDetailScreen(
 private fun PokemonDetailContent(
     modifier: Modifier,
     viewState: PokemonDetailViewState,
-    onClickCapture: () -> Unit
+    onClickCapture: () -> Unit,
+    onClickRename: () -> Unit,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         when {
@@ -179,6 +185,16 @@ private fun PokemonDetailContent(
                                     painter = painterResource(id = R.drawable.baseline_catching_pokemon_24),
                                     contentDescription = null,
                                 )
+                            }
+                            if (viewState.capturedSectionViewState.isCaptured) {
+                                Button(
+                                    modifier = Modifier
+                                        .wrapContentSize(),
+                                    enabled = !viewState.capturedSectionViewState.isLoading,
+                                    onClick = onClickRename,
+                                ) {
+                                    Text(text = "Rename")
+                                }
                             }
                         }
                         Divider()

@@ -118,7 +118,8 @@ data class NaturePokeathlonStatAffect(
 data class Pokemon(
     @PrimaryKey
     val id: Int,
-    val name: String,
+    var name: String,
+    val renameCount: Int = 0,
     @Ignore
     val baseExperience: Int = 0,
     @Ignore
@@ -146,17 +147,18 @@ data class Pokemon(
     @Ignore
     val types: List<PokemonType> = emptyList(),
     @Ignore
-    val sprites: PokemonSprites?
+    val sprites: PokemonSprites?,
 ) {
-    constructor(id: Int, name: String) : this(
+    constructor(id: Int, name: String, renameCount: Int) : this(
         id,
         name,
+        renameCount,
         0,
         0,
         false,
         0,
         0,
-        NamedApiResource("",""),
+        NamedApiResource("", ""),
         emptyList(),
         emptyList(),
         emptyList(),

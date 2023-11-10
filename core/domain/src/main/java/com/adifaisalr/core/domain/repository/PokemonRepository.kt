@@ -11,4 +11,5 @@ interface PokemonRepository {
     suspend fun deletePokemon(pokemon: Pokemon): Int
     suspend fun loadAllPokemonLocally(): List<Pokemon>
     suspend fun loadPokemonLocallyById(id: Int): Pokemon?
+    suspend fun updatePokemon(pokemon: Pokemon): Int
 }

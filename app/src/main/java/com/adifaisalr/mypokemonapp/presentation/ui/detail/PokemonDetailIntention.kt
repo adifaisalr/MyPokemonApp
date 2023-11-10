@@ -2,6 +2,7 @@ package com.adifaisalr.mypokemonapp.presentation.ui.detail
 
 import com.adifaisalr.core.domain.model.Pokemon
 import com.adifaisalr.mypokemonapp.presentation.ui.base.BaseViewModel
+import com.adifaisalr.mypokemonapp.presentation.ui.pokemonlist.PokemonListActionResult
 
 data class PokemonDetailViewState(
     val pokemon: Pokemon? = null,
@@ -29,4 +30,5 @@ sealed class PokemonDetailActionResult : BaseViewModel.ActionResult {
 
     data class ShowToast(val message: String) : PokemonDetailActionResult()
     data object RefreshState : PokemonDetailActionResult()
+    data object DoNothing : PokemonDetailActionResult()
 }
