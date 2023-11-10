@@ -24,6 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.adifaisalr.mypokemonapp.R
+import com.adifaisalr.mypokemonapp.presentation.ui.captured.CapturedPokemonListRoute
+import com.adifaisalr.mypokemonapp.presentation.ui.captured.CapturedPokemonListViewModel
 import com.adifaisalr.mypokemonapp.presentation.ui.pokemonlist.PokemonListRoute
 import com.adifaisalr.mypokemonapp.presentation.ui.pokemonlist.PokemonListViewModel
 import kotlinx.coroutines.launch
@@ -72,12 +74,16 @@ fun HomeScreen(
                     val viewModel = hiltViewModel<PokemonListViewModel>()
                     PokemonListRoute(
                         navController = navController,
-                        viewModel = viewModel
+                        viewModel = viewModel,
                     )
                 }
 
                 else -> {
-
+                    val viewModel = hiltViewModel<CapturedPokemonListViewModel>()
+                    CapturedPokemonListRoute(
+                        navController = navController,
+                        viewModel = viewModel,
+                    )
                 }
             }
         }

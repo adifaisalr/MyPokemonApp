@@ -17,10 +17,6 @@ class PokemonListViewModel @Inject constructor(
 ) {
     protected var itemList: List<NamedApiResource> = emptyList()
 
-    init {
-        loadNextPage()
-    }
-
     fun loadNextPage(isRefreshing: Boolean = false) = viewModelScope.launch {
         if (isRefreshing) {
             handleActionResult(PokemonListActionResult.RefreshState)

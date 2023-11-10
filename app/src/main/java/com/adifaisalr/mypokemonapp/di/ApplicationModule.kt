@@ -1,8 +1,12 @@
 package com.adifaisalr.mypokemonapp.di
 
+import android.app.Application
+import androidx.room.Room
 import com.adifaisalr.core.data.api.Api
 import com.adifaisalr.core.data.api.MyCallAdapterFactory
 import com.adifaisalr.core.data.api.PokemonService
+import com.adifaisalr.core.data.db.PokemonDao
+import com.adifaisalr.core.data.db.PokemonDb
 import com.adifaisalr.core.domain.model.ApiResource
 import com.adifaisalr.core.domain.model.NamedApiResource
 import com.adifaisalr.core.domain.model.util.ApiResourceAdapter
@@ -29,34 +33,36 @@ class ApplicationModule {
             .baseUrl(Api.DEFAULT_BASE_URL)
             .client(Api.getDefaultClient())
             .addCallAdapterFactory(MyCallAdapterFactory())
-            .addConverterFactory(GsonConverterFactory.create(
-                GsonBuilder().apply {
-                    setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                    registerTypeAdapter(
-                        TypeToken.get(ApiResource::class.java).type,
-                        ApiResourceAdapter()
-                    )
-                    registerTypeAdapter(
-                        TypeToken.get(NamedApiResource::class.java).type,
-                        NamedApiResourceAdapter()
-                    )
-                }.create()
-            ))
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder().apply {
+                        setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                        registerTypeAdapter(
+                            TypeToken.get(ApiResource::class.java).type,
+                            ApiResourceAdapter()
+                        )
+                        registerTypeAdapter(
+                            TypeToken.get(NamedApiResource::class.java).type,
+                            NamedApiResourceAdapter()
+                        )
+                    }.create()
+                )
+            )
             .build()
             .create(PokemonService::class.java)
     }
 
-//    @Singleton
-//    @Provides
-//    fun provideDB(app: Application): CurrencyExchangeDb {
-//        return Room
-//            .databaseBuilder(app, CurrencyExchangeDb::class.java, "currency_exchange.db")
-//            .build()
-//    }
-//
-//    @Singleton
-//    @Provides
-//    fun provideDao(db: CurrencyExchangeDb): CurrencyExchangeDao {
-//        return db.dao()
-//    }
+    @Singleton
+    @Provides
+    fun provideDB(app: Application): PokemonDb {
+        return Room
+            .databaseBuilder(app, PokemonDb::class.java, "pokemon.db")
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideDao(db: PokemonDb): PokemonDao {
+        return db.dao()
+    }
 }

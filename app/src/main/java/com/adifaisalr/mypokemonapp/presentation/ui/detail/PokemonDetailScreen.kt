@@ -59,6 +59,9 @@ fun PokemonDetailRoute(
         onRefresh = {
             viewModel.fetchPokemonDetail()
         },
+        onClickCapture = {
+            viewModel.changeCaptured()
+        }
     )
 }
 
@@ -69,7 +72,8 @@ private fun PokemonDetailScreen(
     navController: NavController,
     viewState: PokemonDetailViewState,
     onFetchPokemonDetail: () -> Unit,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onClickCapture: () -> Unit,
 ) {
     LaunchedEffect(key1 = Unit) {
         onFetchPokemonDetail()
@@ -102,7 +106,7 @@ private fun PokemonDetailScreen(
         PokemonDetailContent(
             modifier = modifier.padding(innerPadding),
             viewState = viewState,
-            onClickFavorite = { },
+            onClickCapture = onClickCapture,
         )
     }
 }
@@ -111,7 +115,7 @@ private fun PokemonDetailScreen(
 private fun PokemonDetailContent(
     modifier: Modifier,
     viewState: PokemonDetailViewState,
-    onClickFavorite: () -> Unit
+    onClickCapture: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         when {
@@ -140,7 +144,7 @@ private fun PokemonDetailContent(
                                 .padding(10.dp)
                                 .fillMaxWidth()
                                 .height(200.dp),
-                            model = pokemon.sprites.other.officialArtwork.frontDefault,
+                            model = pokemon.sprites?.other?.officialArtwork?.frontDefault,
                             contentDescription = "pokemonSprite",
                             contentScale = ContentScale.Inside,
                         )
@@ -163,7 +167,7 @@ private fun PokemonDetailContent(
                                 modifier = Modifier
                                     .wrapContentSize(),
                                 enabled = !viewState.capturedSectionViewState.isLoading,
-                                onClick = onClickFavorite,
+                                onClick = onClickCapture,
                             ) {
                                 Text(text = text)
                                 Icon(

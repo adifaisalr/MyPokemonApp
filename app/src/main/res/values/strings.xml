@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">My Pokemon App</string>
     <string name="pokemon_list">Pokemon List</string>
+    <string name="captured_pokemon">Captured Pokemon</string>
     <string name="empty_list">No results</string>
+    <string name="empty_captured_pokemon">No captured pokemon</string>
 </resources>

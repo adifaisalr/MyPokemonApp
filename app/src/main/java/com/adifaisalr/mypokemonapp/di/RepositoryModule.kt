@@ -3,6 +3,7 @@ package com.adifaisalr.mypokemonapp.di
 import com.adifaisalr.core.data.api.PokemonApi
 import com.adifaisalr.core.data.api.PokemonService
 import com.adifaisalr.core.data.api.RetrofitPokemonApi
+import com.adifaisalr.core.data.db.PokemonDao
 import com.adifaisalr.core.data.repository.PokemonRepositoryImpl
 import com.adifaisalr.core.domain.repository.PokemonRepository
 import dagger.Module
@@ -23,7 +24,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRepository(pokemonApi: PokemonApi): PokemonRepository {
-        return PokemonRepositoryImpl(pokemonApi)
+    fun provideRepository(pokemonApi: PokemonApi, pokemonDao: PokemonDao): PokemonRepository {
+        return PokemonRepositoryImpl(pokemonApi, pokemonDao)
     }
 }

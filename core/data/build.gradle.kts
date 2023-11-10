@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -34,6 +35,12 @@ dependencies {
     implementation(libs.retrofit.runtime)
     implementation(libs.retrofit.gson)
     implementation(libs.dagger.hilt.android)
+
+    // room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

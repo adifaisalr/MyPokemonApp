@@ -2,6 +2,7 @@ package com.adifaisalr.core.domain.model
 
 import androidx.room.Entity
 import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class Ability(
@@ -115,35 +116,57 @@ data class NaturePokeathlonStatAffect(
 
 @Entity
 data class Pokemon(
+    @PrimaryKey
     val id: Int,
     val name: String,
     @Ignore
-    val baseExperience: Int,
-    val height: Int,
+    val baseExperience: Int = 0,
     @Ignore
-    val isDefault: Boolean,
+    val height: Int = 0,
     @Ignore
-    val order: Int,
-    val weight: Int,
+    val isDefault: Boolean = false,
+    @Ignore
+    val order: Int = 0,
+    @Ignore
+    val weight: Int = 0,
     @Ignore
     val species: NamedApiResource,
     @Ignore
-    val abilities: List<PokemonAbility>,
+    val abilities: List<PokemonAbility> = emptyList(),
     @Ignore
-    val forms: List<NamedApiResource>,
+    val forms: List<NamedApiResource> = emptyList(),
     @Ignore
-    val gameIndices: List<VersionGameIndex>,
+    val gameIndices: List<VersionGameIndex> = emptyList(),
     @Ignore
-    val heldItems: List<PokemonHeldItem>,
+    val heldItems: List<PokemonHeldItem> = emptyList(),
     @Ignore
-    val moves: List<PokemonMove>,
+    val moves: List<PokemonMove> = emptyList(),
     @Ignore
-    val stats: List<PokemonStat>,
+    val stats: List<PokemonStat> = emptyList(),
     @Ignore
-    val types: List<PokemonType>,
+    val types: List<PokemonType> = emptyList(),
     @Ignore
-    val sprites: PokemonSprites
-)
+    val sprites: PokemonSprites?
+) {
+    constructor(id: Int, name: String) : this(
+        id,
+        name,
+        0,
+        0,
+        false,
+        0,
+        0,
+        NamedApiResource("",""),
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        null,
+    )
+}
 
 data class PokemonSprites(
     val backDefault: String?,

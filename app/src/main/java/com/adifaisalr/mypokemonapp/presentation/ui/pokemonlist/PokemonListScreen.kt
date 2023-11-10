@@ -5,7 +5,6 @@
 
 package com.adifaisalr.mypokemonapp.presentation.ui.pokemonlist
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -128,7 +127,7 @@ private fun PokemonListScreen(
 
                     else -> {
                         items(viewState.itemList) { searchItem ->
-                            SearchItemView(
+                            PokemonItemView(
                                 searchItem = searchItem,
                                 onItemClick = onItemClick,
                             )
@@ -154,7 +153,7 @@ private fun PreviewLoadingItemView() {
 }
 
 @Composable
-fun SearchItemView(
+fun PokemonItemView(
     searchItem: NamedApiResource,
     onItemClick: (NamedApiResource) -> Unit,
 ) {
