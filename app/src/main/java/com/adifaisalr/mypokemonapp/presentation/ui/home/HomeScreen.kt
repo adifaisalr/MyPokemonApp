@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.adifaisalr.mypokemonapp.R
+import com.adifaisalr.mypokemonapp.presentation.ui.pokemonlist.PokemonListRoute
 import com.adifaisalr.mypokemonapp.presentation.ui.pokemonlist.PokemonListScreen
 import com.adifaisalr.mypokemonapp.presentation.ui.pokemonlist.PokemonListViewModel
 import kotlinx.coroutines.launch
@@ -76,7 +77,7 @@ fun HomeScreen(
             when (page) {
                 0 -> {
                     val viewModel = hiltViewModel<PokemonListViewModel>()
-                    PokemonListScreen(
+                    PokemonListRoute(
                         navController = navController,
                         viewModel = viewModel
                     )

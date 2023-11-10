@@ -21,7 +21,10 @@ class PokemonListViewModel @Inject constructor(
         loadNextPage()
     }
 
-    fun loadNextPage() = viewModelScope.launch {
+    fun loadNextPage(isRefreshing: Boolean = false) = viewModelScope.launch {
+        if (isRefreshing) {
+            handleActionResult(PokemonListActionResult.RefreshState)
+        }
         handleActionResult(PokemonListActionResult.SetShowLoading(true))
         when (
             val response = fetchPokemonList(offset = itemList.count(), limit = PER_PAGE)
