@@ -46,6 +46,7 @@ import coil.compose.AsyncImage
 import com.adifaisalr.core.data.api.Api
 import com.adifaisalr.core.domain.model.NamedApiResource
 import com.adifaisalr.mypokemonapp.R
+import com.adifaisalr.mypokemonapp.presentation.ui.util.NavigationUtils.safeNavigate
 import com.adifaisalr.mypokemonapp.presentation.ui.util.OnBottomReached
 
 @Composable
@@ -64,25 +65,22 @@ fun PokemonListRoute(
         onRefresh = {
             viewModel.loadNextPage(true)
         },
+        onItemClick = { item ->
+            navController.safeNavigate("detail/${item.id}")
+        }
     )
 }
 
 @ExperimentalMaterialApi
 @Composable
-fun PokemonListScreen(
+private fun PokemonListScreen(
     modifier: Modifier = Modifier,
     viewState: PokemonListViewState,
     onLoadNextPage: () -> Unit,
     onRefresh: () -> Unit = {},
+    onItemClick: (NamedApiResource) -> Unit,
 ) {
     val listState = rememberLazyListState()
-
-    val onItemClick: ((NamedApiResource) -> Unit) = { item ->
-//        val mediaType = MediaType.values().find { it.type == item.mediaType }
-//        mediaType?.let {
-//            navController.safeNavigate("mediadetail/${mediaType.id}/${item.id}")
-//        }
-    }
     val refreshing = viewState.isLoading && viewState.itemList.isEmpty()
     val pullRefreshState = rememberPullRefreshState(refreshing, onRefresh)
 
@@ -160,7 +158,6 @@ fun SearchItemView(
     searchItem: NamedApiResource,
     onItemClick: (NamedApiResource) -> Unit,
 ) {
-    Log.d("wawawaw", " | ${searchItem.id}")
     Row(modifier = Modifier
         .fillMaxWidth()
         .clickable { onItemClick(searchItem) }) {

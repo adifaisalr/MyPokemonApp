@@ -1,5 +1,9 @@
 package com.adifaisalr.core.domain.model
 
+import androidx.room.Entity
+import androidx.room.Ignore
+import com.google.gson.annotations.SerializedName
+
 data class Ability(
     val id: Int,
     val name: String,
@@ -109,22 +113,35 @@ data class NaturePokeathlonStatAffect(
     val nature: NamedApiResource
 )
 
+@Entity
 data class Pokemon(
     val id: Int,
     val name: String,
+    @Ignore
     val baseExperience: Int,
     val height: Int,
+    @Ignore
     val isDefault: Boolean,
+    @Ignore
     val order: Int,
     val weight: Int,
+    @Ignore
     val species: NamedApiResource,
+    @Ignore
     val abilities: List<PokemonAbility>,
+    @Ignore
     val forms: List<NamedApiResource>,
+    @Ignore
     val gameIndices: List<VersionGameIndex>,
+    @Ignore
     val heldItems: List<PokemonHeldItem>,
+    @Ignore
     val moves: List<PokemonMove>,
+    @Ignore
     val stats: List<PokemonStat>,
+    @Ignore
     val types: List<PokemonType>,
+    @Ignore
     val sprites: PokemonSprites
 )
 
@@ -136,8 +153,33 @@ data class PokemonSprites(
     val backFemale: String?,
     val backShinyFemale: String?,
     val frontFemale: String?,
-    val frontShinyFemale: String?
+    val frontShinyFemale: String?,
+    val other: PokemonSpritesOther
 
+)
+
+data class PokemonSpritesOther(
+    val dreamWorld: PokemonSpritesDreamWorld,
+    val home: PokemonSpritesHome,
+    @SerializedName("official-artwork")
+    val officialArtwork: PokemonSpritesOfficialArtwork
+)
+
+data class PokemonSpritesDreamWorld(
+    val frontDefault: String,
+    val frontFemale: String?
+)
+
+data class PokemonSpritesHome(
+    val frontDefault: String,
+    val frontFemale: String?,
+    val frontShiny: String,
+    val frontShinyFemale: String?
+)
+
+data class PokemonSpritesOfficialArtwork(
+    val frontDefault: String,
+    val frontShiny: String
 )
 
 data class PokemonAbility(

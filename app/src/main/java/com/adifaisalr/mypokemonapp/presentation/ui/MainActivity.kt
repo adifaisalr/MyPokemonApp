@@ -7,9 +7,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.adifaisalr.mypokemonapp.presentation.ui.detail.PokemonDetailRoute
+import com.adifaisalr.mypokemonapp.presentation.ui.detail.PokemonDetailViewModel
 import com.adifaisalr.mypokemonapp.presentation.ui.home.HomeScreen
 import com.adifaisalr.mypokemonapp.presentation.ui.pokemonlist.PokemonListViewModel
 import com.adifaisalr.mypokemonapp.presentation.ui.theme.MyPokemonAppTheme
@@ -25,6 +28,15 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "home") {
                     composable("home") {
                         HomeScreen(navController = navController)
+                    }
+                    composable("detail/{id}") { backStackEntry ->
+                        val viewModel = hiltViewModel<PokemonDetailViewModel>()
+                        val id = backStackEntry.arguments?.getString("id") ?: return@composable
+                        PokemonDetailRoute(
+                            navController = navController,
+                            pokemonId = id.toInt(),
+                            viewModel = viewModel,
+                        )
                     }
                 }
             }
