@@ -7,6 +7,20 @@ Features :
 - Release a captured pokemon (remove from local db)
 - Rename a pokemon (add fibonacci postfix)
 
-Prerequisite :
+## Prerequisite
 - Android Studio (Girrafe or later)
 - JDK version 17
+
+## Architecture
+Clean Architecture with layers :
+- Domain : Use Case, Repository Interface, Model
+- Data : Repository Implementation, DAO, API Service
+- Presentation : Activity, Fragment, ViewModel
+
+## Tech Stacks
+- Jetpack Compose + navigation compose
+- API Call : Retrofit + Gson
+- Local DB : Room 
+- Dependency Injection : Hilt
+- Image Loader : Coil (for jetpack compose)
+- Network logging : Flipper
