@@ -10,6 +10,7 @@ Features :
 ## Prerequisite
 - Android Studio (Girrafe or later)
 - JDK version 17
+- Minimum SDK : 31 (for android core splashscreen library)
 
 ## Architecture
 Clean Architecture with layers :

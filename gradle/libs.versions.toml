@@ -51,8 +51,9 @@ androidx-activity-compose = "1.7.2"
 androidxHiltNavigationCompose = "1.0.0"
 coil = "2.4.0"
 ksp = "1.9.0-1.0.13"
+splashscreen = "1.0.1"
 # @keep
-minSdk = "23"
+minSdk = "31"
 targetSdk = "33"
 compileSdk = "34"
 version-catalog-update = "0.8.1"
@@ -135,6 +136,8 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+# splash
+splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 
 
 [plugins]

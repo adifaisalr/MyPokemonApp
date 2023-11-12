@@ -77,6 +77,8 @@ dependencies {
 
     implementation(libs.fb.shimmer)
 
+    implementation(libs.splashscreen)
+
     // Jetpack Compose
     implementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(platform(libs.androidx.compose.bom))

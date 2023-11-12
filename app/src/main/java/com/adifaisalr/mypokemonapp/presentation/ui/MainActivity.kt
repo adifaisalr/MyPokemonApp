@@ -1,12 +1,16 @@
 package com.adifaisalr.mypokemonapp.presentation.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,8 +24,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private var keepSplash = true
+    private val delay = 1250L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val splashScreen = installSplashScreen()
+        setupSplashScreen(splashScreen = splashScreen)
         setContent {
             MyPokemonAppTheme {
                 val navController = rememberNavController()
@@ -41,6 +50,14 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun setupSplashScreen(splashScreen: SplashScreen) {
+        // Replace this timer with your logic to load data on the splash screen.
+        splashScreen.setKeepOnScreenCondition { keepSplash }
+        Handler(Looper.getMainLooper()).postDelayed({
+            keepSplash = false
+        }, delay)
     }
 }
 
